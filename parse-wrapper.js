@@ -1,46 +1,38 @@
 function ParseJS(applicationId, javascriptKey) {
-    console.log('init');
     Parse.initialize(applicationId, javascriptKey);
 }
 
 ParseJS.prototype.selectFrom = function(clazz) {
-    console.log('selectFrom');
     this.clazz = clazz;
     return this;
 }
 
 ParseJS.prototype.where = function(conditions) {
-    console.log('where');
     this.conditions = conditions;
     return this;
 }
 
 ParseJS.prototype.orderBy = function(sortOrders) {
-    console.log('orderBy');
     this.sortOrders = sortOrders;
     return this;
 }
 
 ParseJS.prototype.join = function(joinClasses) {
-    console.log('join');
     this.joinClasses = joinClasses;
     return this;
 }
 
 ParseJS.prototype.limit = function(limitation) {
-    console.log('limit');
     this.limitation = limitation;
     return this;
 }
 
 ParseJS.prototype.offset = function(offset_position) {
-    console.log('offset');
     this.offset_position = offset_position;
     return this;
 }
 
 ParseJS.prototype.build = function() {
-    console.log('build');
     var cls = Parse.Object.extend(this.clazz);
     this.query = new Parse.Query(cls);
     for(var key in this.joinClasses) {
@@ -69,7 +61,6 @@ ParseJS.prototype.build = function() {
 }
 
 ParseJS.prototype.find = function() {
-    console.log('find');
     var query = this.query;
     return new Promise(function(resolve, reject) {
         query.find({
@@ -84,7 +75,6 @@ ParseJS.prototype.find = function() {
 }
 
 ParseJS.prototype.count = function() {
-    console.log('count');
     var query = this.query;
     return new Promise(function(resolve, reject) {
         query.count({
