@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+  <script src="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <script src="//www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+  <script src="../parse-wrapper.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Example</h1>
+  </header>
+  <section>
+    <button id="save">Save</button>
+    <button id="find">Find</button>
+    <ul id="list">
+    </ul>
+  </section>
+  <script>
+    Parse.$ = jQuery;
+    var parsejs = new ParseJS('JbuigOvZ1yQBh8yxXrXbx58SxGit4bf9eaElBE7S', 'JwfpSCPYKjfQv95dPtmdU3pbub05cbGVJZlp4cYs');
+    Parse.$(function($) {
+      $(function() {
+        $('#save').click(onSave);
+        $('#find').click(onFind);
+      });
+
+      var names = ['Mike', 'Jack', 'John', 'Rick', 'Ben', 'Marco', 'Patric', 'James', 'Mat', 'Steve'];
+
+      var departments = [];
+
+      function onFullfilledDepartments(data) {
+        departments = data.map(function(obj) {
+          return obj.id;
+        });
+        parsejs.save({
+          Employee:{
+            name: names[Math.floor(Math.random() * 10)],
+            salary: Math.floor(Math.random() * 10000),
+            department$: departments[Math.floor(Math.random() * (departments.length ))],
+          },
+          Audit:{
+            name:'onSave'
+          }
+        }).then(onFullfilled).catch(onRejected);
+      } 
+
+      function onFullfilled(data) {
+        console.log(data);
+      }  
+
+      function onRejected(err) {
+        console.log(err);
+      }  
+
+      function onSave() {
+        var query = parsejs.selectFrom('Department').build();
+        query.find().then(onFullfilledDepartments).catch(onRejected);
+      }
+
+      function onFind() {
+        var query = parsejs.selectFrom('Employee').join(['Department']).where({name:'Marco'}).limit(4).orderBy(['salary desc']).build();
+        query.find().then(onFullfilled).catch(onRejected);
+        query.count().then(onFullfilled).catch(onRejected);
+      }
+    });
+  </script>
+</body>
+</html>
