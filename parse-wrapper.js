@@ -17,8 +17,8 @@ ParseJS.prototype.orderBy = function(sortOrders) {
     return this;
 }
 
-ParseJS.prototype.join = function(joinClasses) {
-    this.joinClasses = joinClasses;
+ParseJS.prototype.joinOn = function(joinColumns) {
+    this.joinColumns = joinColumns;
     return this;
 }
 
@@ -35,8 +35,8 @@ ParseJS.prototype.offset = function(offset_position) {
 ParseJS.prototype.build = function() {
     var cls = Parse.Object.extend(this.clazz);
     this.query = new Parse.Query(cls);
-    for(var key in this.joinClasses) {
-        this.query.include(this.joinClasses[key].toLowerCase());
+    for(var key in this.joinColumns) {
+        this.query.include(this.joinColumns[key]);
     }
     for(var sortOrder in this.sortOrders) {
         var arr = this.sortOrders[sortOrder].replace(/^\s+|\s+$/g, '').split(/\s+/);
@@ -54,7 +54,7 @@ ParseJS.prototype.build = function() {
     this.clazz = null;
     this.conditions = null;
     this.sortOrders = null;
-    this.joinClasses = null;
+    this.joinColumns = null;
     this.limitation = null;
     this.offset_position = null;
     return this;

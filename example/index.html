@@ -19,7 +19,7 @@
   </section>
   <script>
     Parse.$ = jQuery;
-    var parsejs = new ParseJS('ApplicationId', 'JavaScriptKey');
+    var parsejs = new ParseJS('ApplicationID', 'JavaScriptKey');
     Parse.$(function($) {
       $(function() {
         $('#save').click(onSave);
@@ -60,7 +60,7 @@
       }
 
       function onFind() {
-        var query = parsejs.selectFrom('Employee').join(['Department']).where({name:'Marco'}).limit(4).orderBy(['salary desc']).build();
+        var query = parsejs.selectFrom('Employee').joinOn(['department']).where({name:'Marco'}).orderBy(['salary desc']).limit(4).build();
         query.find().then(onFullfilled).catch(onRejected);
         query.count().then(onFullfilled).catch(onRejected);
       }
